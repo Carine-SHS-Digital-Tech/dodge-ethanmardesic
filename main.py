@@ -1,8 +1,21 @@
 # Basic Pygame Structure
-
 import pygame                               # Imports pygame and other libraries
 import random
 # Define Classes (sprites) here
+class FallingObject(pygame.sprite.Sprite):
+    def _init_(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.timecreated = pygame.time.get_ticks()
+        self.image = pygame.surface([30,30])
+        self.image.set_colourkey(black)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(0,670)
+        self.rect.y = 0
+
+    def setImage(self,graphicSelected):
+        fallingObjectsImage = pygame.image.load(graphicSelected)
+        self.image.blit(fallingObjectsImage,(0,0))
 
 pygame.init()                               # Pygame is initialised (starts running)
 
@@ -15,7 +28,7 @@ black    = (   0,   0,   0)                 # Define some colors using rgb value
 white    = ( 255, 255, 255)                 # used throughout the game instead of using rgb values.
 
 # Define additional Functions and Procedures here
-
+allFallingObjects = pygame.sprite.Group()
 # -------- Main Program Loop -----------
 while done == False:
 
@@ -24,7 +37,13 @@ while done == False:
             done = True                     # Flag that we are done so we exit this loop
 
     # Update sprites here
+    nextObject = FallingObject()
+    nextObject.setImage("Apple.png")
+
+    allFallingObjects.add(nextObject)
     screen.blit(background_image, [0,0])
+    allFallingObjects.draw(screen)
+
     pygame.display.flip()                   # Go ahead and update the screen with what we've drawn.
     clock.tick(20)                          # Limit to 20 frames per second
 
